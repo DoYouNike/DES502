@@ -18,8 +18,12 @@ public class HealthUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if(EnemyControl.instance.maxH >=0)
-        scoreText.text = "Health: " + EnemyControl.instance.maxH + "/10";
+      
+            if (EnemyControl.instance.maxH < 0)
+            {
+                EnemyControl.instance.maxH = 0;
+            }
+            scoreText.text = "Health: " + EnemyControl.instance.maxH + "/10";
         
     }
 }

@@ -22,7 +22,7 @@ public class EnemyControl : MonoBehaviour
     }
     private void Update()
     {
-        if (maxH ==0)
+        if (maxH ==0 || maxH<0)
         {
             enemyAnim.SetBool("isDead", true);
             Destroy(this.gameObject, this.enemyAnim.GetCurrentAnimatorStateInfo(0).length+delay);

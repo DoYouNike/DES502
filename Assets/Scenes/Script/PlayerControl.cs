@@ -11,11 +11,20 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float moveS,jumpS;
     [SerializeField] private LayerMask ground;
     private Rigidbody2D rb;
+    private bool isLight, isMed, isHeavy;
     Animator playerAnim;
     public bool isHit;
     bool isCrouch;
     private Collider2D col2D;
     public int maxH;
+    [SerializeField]
+    float leftLimit;
+    [SerializeField]
+    float rightLimit;
+    [SerializeField]
+    float topLimit;
+    [SerializeField]
+    float bottomLimit;
     private void Awake()
     {
         instance = this;
@@ -27,6 +36,9 @@ public class PlayerControl : MonoBehaviour
         jumpS = 5f;
         isCrouch = false;
         isHit = false;
+        isLight = false;
+        isMed = false;
+        isHeavy = false;
         maxH = 10;
     }
    
@@ -42,6 +54,8 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         _keyControls.Player.LightAttack.performed += _ => LightAttack();
+        _keyControls.Player.MediumAttack.performed += _ => MediumAttack();
+        _keyControls.Player.HeavyAttack.performed += _ => HeavyAttack();
         _keyControls.Player.Jump.performed += _ => Jump();
         _keyControls.Player.Crouch.performed += _ => Crouch();
     }
@@ -80,6 +94,34 @@ public class PlayerControl : MonoBehaviour
             playerAnim.SetBool("isWalking", false);
             playerAnim.SetTrigger("hit");
         }
+        isLight = true;
+        isMed = false;
+        isHeavy = false;
+    }
+    private void MediumAttack()
+    {
+        if (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        {
+            playerAnim.SetBool("isWalking", false);
+            playerAnim.SetTrigger("hit");
+        }
+        isMed = true;
+        isLight = false;
+        isHeavy = false;
+
+    }
+
+    private void HeavyAttack()
+    {
+        if (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        {
+            playerAnim.SetBool("isWalking", false);
+            playerAnim.SetTrigger("hit");
+        }
+        isHeavy = true;
+        isLight = false;
+        isMed = false;
+       
     }
 
     void Update()
@@ -105,11 +147,28 @@ public class PlayerControl : MonoBehaviour
         if (collision.gameObject.name.Equals("Enemy"))
         {
             isHit = true;
-            EnemyControl.instance.maxH--;
+            AttackType();
         }
         else
         {
             isHit = false;
         }
     }
+
+    private void AttackType()
+    {
+        if (isLight == true)
+        {
+            EnemyControl.instance.maxH--;
+        }
+        else if (isMed == true)
+        {
+            EnemyControl.instance.maxH-=2;
+        }
+        else if (isHeavy == true)
+        {
+            EnemyControl.instance.maxH-=3;
+        }
+    }
+
 }
