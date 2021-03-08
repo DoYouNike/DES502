@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "b7f4b969-699e-44b2-a299-116c5c724a88",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -103,7 +111,7 @@
                     "name": "",
                     "id": "653e6a76-2093-4ab9-9d76-dcdd583253bc",
                     "path": "<Keyboard>/w",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
@@ -114,7 +122,7 @@
                     "name": "",
                     "id": "f2507558-1627-4c27-b125-98e45148a77b",
                     "path": "<Keyboard>/s",
-                    "interactions": "Press",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
                     "action": "Crouch",
@@ -140,6 +148,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MediumAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "45d16246-0dc9-49c5-98b0-4eecd39d59af",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

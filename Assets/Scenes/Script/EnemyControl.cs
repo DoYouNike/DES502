@@ -13,7 +13,7 @@ public class EnemyControl : MonoBehaviour
     {
         instance = this;
         enemyAnim = GetComponent<Animator>();
-        maxH = 10;
+        maxH = 20;
         delay = 0f;
     }
     private void Start()

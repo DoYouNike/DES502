@@ -7,9 +7,14 @@ public class Loading : MonoBehaviour
 {
     public GameObject loadingScreen;
     public Slider slider;
-    
+    public static Loading instance;
 
-   public void LoadingScene(int sceneIndex)
+    private void Awake()
+    {
+        instance = this;
+       
+    }
+    public void LoadingScene(int sceneIndex)
     {
         loadingScreen.SetActive(true);
         StartCoroutine(Load(sceneIndex));

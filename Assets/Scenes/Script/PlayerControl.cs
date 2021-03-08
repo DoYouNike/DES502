@@ -11,10 +11,10 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float moveS,jumpS;
     [SerializeField] private LayerMask ground;
     private Rigidbody2D rb;
-    private bool isLight, isMed, isHeavy;
+    private bool isLight, isMed, isHeavy, isjumpAttack, isCrouch;
     Animator playerAnim;
     public bool isHit;
-    bool isCrouch;
+    bool isGround;
     private Collider2D col2D;
     public int maxH;
     [SerializeField]
@@ -25,6 +25,8 @@ public class PlayerControl : MonoBehaviour
     float topLimit;
     [SerializeField]
     float bottomLimit;
+    [SerializeField]
+    Transform groundCheck;
     private void Awake()
     {
         instance = this;
@@ -33,12 +35,13 @@ public class PlayerControl : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col2D = GetComponent<Collider2D>();
         moveS = 5f;
-        jumpS = 5f;
-        isCrouch = false;
+        jumpS = 6f;
         isHit = false;
         isLight = false;
         isMed = false;
         isHeavy = false;
+        isjumpAttack = false;
+        isCrouch = false;
         maxH = 10;
     }
    
@@ -62,37 +65,64 @@ public class PlayerControl : MonoBehaviour
 
     private void Crouch()
     {
-
-        playerAnim.SetBool("isCrouch", true);
+        float valueP = _keyControls.Player.Crouch.ReadValue<float>();
+        if (valueP > 0)
+        {
+            isCrouch = true;
+            playerAnim.SetBool("isCrouch", true);
+            
+        }
+        else if (valueP == 0)
+        {
+            isCrouch = false;
+            playerAnim.SetBool("isCrouch", false);
+         
+        }
     }
 
     private void Jump()
     {
-        if (IsGrounded())
+
+        float valuez = _keyControls.Player.Jump.ReadValue<float>();
+        if ( valuez >0)
         {
-            rb.AddForce(new Vector2(0, jumpS), ForceMode2D.Impulse); 
-        }  
+            if (IsGrounded() == true)
+            {
+                rb.AddForce(new Vector2(0, jumpS), ForceMode2D.Impulse);
+                isjumpAttack = true;
+                playerAnim.SetBool("isJump", true);
+                
+            }
+           
+        }
+       else if (valuez ==0)
+        {
+            isjumpAttack = false;
+            playerAnim.SetBool("isJump", false);
+        }
     }
 
     private bool IsGrounded()
     {
-        Vector2 topLeftP = transform.position;
-        topLeftP.x -= col2D.bounds.extents.x;
-        topLeftP.y += col2D.bounds.extents.y;
+        isGround = Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground);
 
-        Vector2 bottomRightP = transform.position;
-        bottomRightP.x += col2D.bounds.extents.x;
-        bottomRightP.y -= col2D.bounds.extents.y;
-
-        return Physics2D.OverlapArea(topLeftP,bottomRightP, ground);
+        return isGround;
     }
 
     private void LightAttack()
     {
-        if (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        if (IsGrounded()&& isCrouch == false&&!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Mila_Punch"))
         {
             playerAnim.SetBool("isWalking", false);
             playerAnim.SetTrigger("hit");
+        }
+        else if(isjumpAttack == true &&!IsGrounded()&& !playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Mila_JumpKick"))
+        {
+            playerAnim.SetTrigger("jumpKick");
+        }
+        else if (IsGrounded()&&isCrouch == true && !playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Mila_CrouchKick"))
+        {
+            playerAnim.SetTrigger("crouchKick");
         }
         isLight = true;
         isMed = false;
@@ -100,7 +130,7 @@ public class PlayerControl : MonoBehaviour
     }
     private void MediumAttack()
     {
-        if (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        if (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Mila_Punch"))
         {
             playerAnim.SetBool("isWalking", false);
             playerAnim.SetTrigger("hit");
@@ -113,7 +143,7 @@ public class PlayerControl : MonoBehaviour
 
     private void HeavyAttack()
     {
-        if (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        if (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Mila_Punch"))
         {
             playerAnim.SetBool("isWalking", false);
             playerAnim.SetTrigger("hit");
@@ -132,7 +162,7 @@ public class PlayerControl : MonoBehaviour
         Vector3 currentPosition = transform.position;
         currentPosition.x += moveV * moveS * Time.deltaTime;
         transform.position = currentPosition;
-        if (moveV != 0 && !playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+        if (moveV != 0 && !playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Mila_Punch") && !playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Mila_Jump") && !playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Mila_Crouch"))
         {
             playerAnim.SetBool("isWalking", true);
         }
@@ -144,7 +174,7 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name.Equals("Enemy"))
+        if (collision.gameObject.tag.Equals("Enemy"))
         {
             isHit = true;
             AttackType();

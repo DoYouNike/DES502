@@ -65,6 +65,14 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""b7f4b969-699e-44b2-a299-116c5c724a88"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -116,7 +124,7 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""653e6a76-2093-4ab9-9d76-dcdd583253bc"",
                     ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
@@ -127,7 +135,7 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""f2507558-1627-4c27-b125-98e45148a77b"",
                     ""path"": ""<Keyboard>/s"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Crouch"",
@@ -155,6 +163,17 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
                     ""action"": ""MediumAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45d16246-0dc9-49c5-98b0-4eecd39d59af"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -169,6 +188,7 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_HeavyAttack = m_Player.FindAction("HeavyAttack", throwIfNotFound: true);
         m_Player_MediumAttack = m_Player.FindAction("MediumAttack", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -224,6 +244,7 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_HeavyAttack;
     private readonly InputAction m_Player_MediumAttack;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @InputKeyControl m_Wrapper;
@@ -234,6 +255,7 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @HeavyAttack => m_Wrapper.m_Player_HeavyAttack;
         public InputAction @MediumAttack => m_Wrapper.m_Player_MediumAttack;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -261,6 +283,9 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
                 @MediumAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMediumAttack;
                 @MediumAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMediumAttack;
                 @MediumAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMediumAttack;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -283,6 +308,9 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
                 @MediumAttack.started += instance.OnMediumAttack;
                 @MediumAttack.performed += instance.OnMediumAttack;
                 @MediumAttack.canceled += instance.OnMediumAttack;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -295,5 +323,6 @@ public class @InputKeyControl : IInputActionCollection, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnHeavyAttack(InputAction.CallbackContext context);
         void OnMediumAttack(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }
