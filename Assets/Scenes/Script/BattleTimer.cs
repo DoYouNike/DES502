@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class BattleTimer : MonoBehaviour
 {
-    public int roundTime = 100;
+    public static BattleTimer instance;
+    public int roundTime = 99;
     private float lastTimeUpdate = 0;
 
-    private void Start()
+    private void Awake()
+    {
+        instance = this;
+    }
+     private void Start()
     {
         
     }

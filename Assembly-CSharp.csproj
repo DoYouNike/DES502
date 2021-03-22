@@ -69,13 +69,16 @@
     <Compile Include="Assets\Scenes\MainMenu.cs" />
     <Compile Include="Assets\Scenes\PauseMenu.cs" />
     <Compile Include="Assets\Scenes\Script\BattleTimer.cs" />
+    <Compile Include="Assets\Scenes\Script\CharacterUI.cs" />
     <Compile Include="Assets\Scenes\Script\EnemyControl.cs" />
     <Compile Include="Assets\Scenes\Script\GameManager.cs" />
+    <Compile Include="Assets\Scenes\Script\GameUI.cs" />
     <Compile Include="Assets\Scenes\Script\HealthUI.cs" />
     <Compile Include="Assets\Scenes\Script\InputKeyControl.cs" />
     <Compile Include="Assets\Scenes\Script\MatchCameraToFit.cs" />
     <Compile Include="Assets\Scenes\Script\PlayerControl.cs" />
     <Compile Include="Assets\Scenes\Script\PlayerManager.cs" />
+    <Compile Include="Assets\Scenes\Script\SelectCharacter.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

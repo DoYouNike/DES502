@@ -42,7 +42,7 @@ public class PlayerControl : MonoBehaviour
         isHeavy = false;
         isjumpAttack = false;
         isCrouch = false;
-        maxH = 10;
+        maxH = 20;
     }
    
     private void OnEnable()
@@ -174,30 +174,31 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Enemy"))
+        if (collision.CompareTag("Enemy")&!collision.CompareTag("Player"))
         {
             isHit = true;
+            
             AttackType();
-        }
-        else
+        }else
         {
             isHit = false;
         }
+       
     }
 
-    private void AttackType()
+    public void AttackType()
     {
         if (isLight == true)
         {
-            EnemyControl.instance.maxH--;
+            EnemyControl.instance.maxHealth--;
         }
         else if (isMed == true)
         {
-            EnemyControl.instance.maxH-=2;
+            EnemyControl.instance.maxHealth-=2;
         }
         else if (isHeavy == true)
         {
-            EnemyControl.instance.maxH-=3;
+            EnemyControl.instance.maxHealth-=3;
         }
     }
 

@@ -6,16 +6,17 @@ using UnityEngine.UI;
 
 public class HealthUI : MonoBehaviour
 {
-    Text scoreText;
-     public Slider eSlider;
+   
+    public Slider eSlider;
     public Slider pSlider;
     public BattleTimer bTimer;
     public Text timer;
+   
     // Start is called before the first frame update
     void Start()
     {
-        scoreText = GetComponent<Text>();
-        eSlider.maxValue = EnemyControl.instance.maxH;
+       
+        eSlider.maxValue = EnemyControl.instance.maxHealth;
         pSlider.maxValue = PlayerControl.instance.maxH;
     }
 
@@ -24,13 +25,29 @@ public class HealthUI : MonoBehaviour
     {
 
         timer.text = bTimer.roundTime.ToString();
-            if (EnemyControl.instance.maxH < 0)
-            {
-                EnemyControl.instance.maxH = 0;
-            }
-            scoreText.text = "Health: " + EnemyControl.instance.maxH + "/20";
-            eSlider.value = EnemyControl.instance.maxH;
-             pSlider.value = PlayerControl.instance.maxH;
+        EnemyHealth();
+        PlayerHealth();
 
     }
+
+    public void EnemyHealth()
+    {
+        if (EnemyControl.instance.maxHealth < 0)
+        {
+            EnemyControl.instance.maxHealth = 0;
+        }
+        
+        eSlider.value = EnemyControl.instance.maxHealth;
+       
+    }
+    public void PlayerHealth()
+    {
+        if (PlayerControl.instance.maxH < 0)
+        {
+            PlayerControl.instance.maxH = 0;
+        }
+        pSlider.value = PlayerControl.instance.maxH;
+    }
+
+   
 }
