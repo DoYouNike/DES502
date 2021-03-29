@@ -12,6 +12,8 @@ public class CharacterUI : MonoBehaviour
     public Sprite enemy50;
     public Sprite enemy20;
     public Sprite enemy10;
+    Animator playerAni;
+    Animator ghostAni;
     private float enemyFullhealth;
     private float playerFullhealth;
     public Sprite playerfull;
@@ -22,6 +24,9 @@ public class CharacterUI : MonoBehaviour
     {
         enemyFullhealth = EnemyControl.instance.maxHealth;
         playerFullhealth = PlayerControl.instance.maxH;
+        playerAni = player.GetComponent<Animator>();
+        ghostAni = enemy.GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
@@ -37,7 +42,7 @@ public class CharacterUI : MonoBehaviour
             EnemyControl.instance.maxHealth = 0;
         }
         healthPercent = Mathf.RoundToInt(EnemyControl.instance.maxHealth / enemyFullhealth * 100);
-        Debug.Log(healthPercent);
+       
         if (healthPercent == 100)
         {
             enemy.GetComponent<Image>().sprite = enemyfull;
@@ -50,10 +55,12 @@ public class CharacterUI : MonoBehaviour
         else if (healthPercent == 20)
         {
             enemy.GetComponent<Image>().sprite = enemy20;
+            ghostAni.enabled = true;
 
         }
         else if (healthPercent == 10)
         {
+            ghostAni.enabled = false;
             enemy.GetComponent<Image>().sprite = enemy10;
 
         }
@@ -78,11 +85,14 @@ public class CharacterUI : MonoBehaviour
         else if (healthPercent == 20)
         {
             player.GetComponent<Image>().sprite = player20;
+            playerAni.enabled = true;
 
         }
         else if (healthPercent == 10)
-        {
+        {   
+            playerAni.enabled = false;
             player.GetComponent<Image>().sprite = player10;
+            
 
         }
     }

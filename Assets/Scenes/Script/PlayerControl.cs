@@ -42,7 +42,7 @@ public class PlayerControl : MonoBehaviour
         isHeavy = false;
         isjumpAttack = false;
         isCrouch = false;
-        maxH = 20;
+        maxH = 40;
     }
    
     private void OnEnable()

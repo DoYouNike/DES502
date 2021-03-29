@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private float playerHealth;
     private float enemyHealth;
     private float gameT;
-    bool winGame ;
+    public bool winGame ;
     private void Awake()
     {
         instance = this;
@@ -34,12 +34,12 @@ public class GameManager : MonoBehaviour
         if (playerHealth <= 0 || enemyHealth <= 0 || gameT <=0)
         {
             gameEnd = true;
-            if (playerHealth <= 0 || gameT <=0)
+            if (playerHealth <= 0 || gameT <=0 && gameEnd == true)
             {
                 winGame = false;
                 GameUI.instance.GameOver();
             }
-            else if (enemyHealth <=0)
+            else if (enemyHealth <=0 && gameEnd == true)
             {
                 winGame = true;
                 GameUI.instance.Win();

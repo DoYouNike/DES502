@@ -25,14 +25,14 @@ public class GameUI : MonoBehaviour
 
     public void Win()
     {
-        
+        if (GameManager.instance.winGame == true)
         WinUI.SetActive(true);
         Time.timeScale = 0f;
     }
     public void GameOver()
     {
-        
-        GameOverUI.SetActive(true);
+        if (!GameManager.instance.winGame)
+            GameOverUI.SetActive(true);
         Time.timeScale = 0f;
     }
 }
